@@ -1,0 +1,6 @@
+# Dev Files
+.vscode/
+.pytest_cache/
+
+# Mac Files
+.DS_Store
