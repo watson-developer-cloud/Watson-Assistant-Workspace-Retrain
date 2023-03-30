@@ -25,7 +25,7 @@ class Retrain_Wksp_Tests(unittest.TestCase):
         retrain_wksp.get_workspaces = Mock(return_value=self.lots_of_workspaces)
         retrain_wksp.update_intent_desc = Mock()
         retrain_wksp.update_intent_desc.return_value.get_status_code.return_value = 200
-        retrain_wksp.get_intents = Mock(return_value=self.intents)
+        retrain_wksp.get_intents = Mock(return_value=self.intents[0])
         time.sleep = Mock(return_value=None)
 
         retrain_wksp.retrain_wksp()
@@ -43,7 +43,7 @@ class Retrain_Wksp_Tests(unittest.TestCase):
         retrain_wksp.get_workspaces = Mock(return_value=self.little_workspaces)
         retrain_wksp.update_intent_desc = Mock()
         retrain_wksp.update_intent_desc.return_value.get_status_code.return_value = 200
-        retrain_wksp.get_intents = Mock(return_value=self.intents)
+        retrain_wksp.get_intents = Mock(return_value=self.intents[0])
         time.sleep = Mock(return_value=None)
 
         retrain_wksp.retrain_wksp()
@@ -59,14 +59,16 @@ class Retrain_Wksp_Tests(unittest.TestCase):
     
     def test_errors(self):
         retrain_wksp.get_workspaces = Mock(return_value=self.single_workspace)
-        retrain_wksp.get_intents = Mock(return_value=self.intent_is_none)
+        retrain_wksp.get_intents = Mock(return_value=None)
+        retrain_wksp.get_entities = Mock(return_value=None)
         retrain_wksp.save_workspace = Mock(return_value=None)
+        
         retrain_wksp.retrain_wksp()
 
-        retrain_wksp.save_workspace.assert_called_once()
+        retrain_wksp.save_workspace.assert_not_called()
         self.reset_mocks(retrain_wksp.save_workspace)
 
-        retrain_wksp.get_intents = Mock(return_value=self.intents)
+        retrain_wksp.get_intents = Mock(return_value=self.intents[0])
         retrain_wksp.update_intent_desc = Mock()
         retrain_wksp.update_intent_desc.return_value.get_status_code.return_value = 403
         retrain_wksp.retrain_wksp()

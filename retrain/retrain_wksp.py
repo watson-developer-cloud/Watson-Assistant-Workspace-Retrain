@@ -53,7 +53,7 @@ assistant.set_service_url(instance_url)
 
 def save_workspace(wksp_id, filename):
     with open(Path(filename), mode='a') as f:
-        f.writelines(wksp_id)
+        f.writelines(wksp_id + "\n")
 
 def get_workspaces() -> List:
     response = assistant.list_workspaces().get_result()
@@ -83,7 +83,7 @@ def create_new_desc(desc: str):
     return desc
 
 def update(obj: dict, workspace_id):
-    new_desc = new_desc = create_new_desc(obj.get('description', ''))
+    new_desc = create_new_desc(obj.get('description', ''))
     if Variables.ENTITY in obj.keys():
         return update_entity_desc(obj, workspace_id, new_desc)
     if Variables.INTENT in obj.keys():
